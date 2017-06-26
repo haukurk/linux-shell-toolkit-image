@@ -36,3 +36,5 @@ Tools included:
 * Terraform
 * AWS CLI
 * Puppet
+* vtop
+* public-ip

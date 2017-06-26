@@ -55,5 +55,7 @@ RUN unzip terraform_0.9.8_linux_amd64.zip
 RUN rm terraform_0.9.8_linux_amd64.zip
 RUN cp terraform /usr/local/bin/terraform
 RUN pip install --upgrade --user awscli
+RUN npm install -g vtop
+RUN npm install -g public-ip
 
 ENV PATH="/opt/maven/bin/:/usr/local/go/bin:/opt/jdk1.8.0_131/bin:/opt/jdk1.8.0_131/jre/bin:${PATH}"
