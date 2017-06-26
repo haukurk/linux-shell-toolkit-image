@@ -26,19 +26,26 @@ RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2
 RUN tar xzf jdk-8u131-linux-x64.tar.gz && rm *.tar.gz
 ENV JAVA_HOME="/opt/jdk1.8.0_131"
 ENV JRE_HOME="/opt/jdk1.8.0_131/jre"
-ENV PATH="/opt/jdk1.8.0_131/bin:/opt/jdk1.8.0_131/jre/bin:${PATH}"
 RUN wget http://www-eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 RUN tar xzf apache-maven-3.3.9-bin.tar.gz
 RUN rm *.gz
 RUN ln -s apache-maven-3.3.9 maven
 ENV M2_HOME="/opt/maven" 
-ENV PATH="/opt/maven/bin/:/opt/jdk1.8.0_131/bin:/opt/jdk1.8.0_131/jre/bin:${PATH}"
 
 # Scala
 WORKDIR /root
 RUN wget http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.rpm
 RUN yum install scala-2.11.8.rpm -y
 RUN rm *.rpm
+
+# Go
+WORKDIR /tmp
+RUN curl -LO https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+RUN tar -C /usr/local -xvzf go1.8.linux-amd64.tar.gz
+RUN mkdir -p /persistance/go/projects/{bin,pkg,src}
+ENV GOBIN="$HOME/projects/bin"
+ENV GOPATH="$HOME/projects/src"
+ENV GOROOT="/usr/local/go"
 
 # Other tools
 RUN npm install -g http-server
@@ -48,3 +55,5 @@ RUN unzip terraform_0.9.8_linux_amd64.zip
 RUN rm terraform_0.9.8_linux_amd64.zip
 RUN cp terraform /usr/local/bin/terraform
 RUN pip install --upgrade --user awscli
+
+ENV PATH="/opt/maven/bin/:/usr/local/go/bin:/opt/jdk1.8.0_131/bin:/opt/jdk1.8.0_131/jre/bin:${PATH}"
