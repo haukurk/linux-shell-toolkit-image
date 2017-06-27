@@ -11,7 +11,7 @@ COPY id_rsa .
 # yum update
 RUN yum -y update && yum clean all
 RUN yum install epel-release -y
-RUN yum install unzip git nmap gcc-c++ sudo make telnet wget lynx netcat python-pip -y
+RUN yum install unzip git nmap gcc-c++ net-tools sudo make telnet wget lynx netcat python-pip -y
 
 # Node
 RUN curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
@@ -46,6 +46,12 @@ RUN mkdir -p /persistance/go/projects/{bin,pkg,src}
 ENV GOBIN="$HOME/projects/bin"
 ENV GOPATH="$HOME/projects/src"
 ENV GOROOT="/usr/local/go"
+
+# .NET Core
+RUN yum install libunwind libicu -y 
+RUN curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?linkid=848821
+RUN sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet
+RUN sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 
 # Other tools
 RUN npm install -g http-server
